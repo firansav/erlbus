@@ -29,13 +29,13 @@
         websocket.onerror = function(evt) { onError(evt) }; 
       }; 
       function onOpen(evt) { 
-        jQuery('#roomContainer').fadeIn('slow');
+        jQuery('#roomContainer').fadeIn('fast');
       };  
       function onClose(evt) { 
-        jQuery('#roomContainer').fadeOut('slow');
+        jQuery('#roomContainer').hide();
         showAlert('<span style="color: red;">Websocket connection has been closed!</span>');
-        jQuery("#username").fadeIn("slow");
-        jQuery("#connectButton").fadeIn("slow");
+        jQuery("#username").fadeIn("fast");
+        jQuery("#connectButton").fadeIn("fast");
       };  
       function onMessage(evt) { 
         showMessage(jQuery.parseJSON(evt.data));
@@ -53,7 +53,7 @@
         };
       };
       function showMessage(data) {
-        jQuery('#chatContainer').append('<div>' + data.sender + ' -> ' + data.msg + '</div>');
+        jQuery('#chatContainer').append('<div>' + data.sender + ': ' + data.msg + '</div>');
       };
       function showAlert(txt) {
         jQuery("#alertContainer").html(txt);
@@ -61,10 +61,19 @@
       }
       </script>
       <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
         #chatContainer {
-          background-color:lightgray;
           min-width: 300px;
           min-height: 200px;
+          font-family: Roboto;
+        }
+        div {
+          padding: 5px;
+          background-color:#f88379;
+        }
+        h3 {
+          font-family: Roboto;
+          padding: 1px;
         }
       </style>
   </head>

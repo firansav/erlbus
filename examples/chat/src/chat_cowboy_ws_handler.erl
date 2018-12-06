@@ -47,8 +47,3 @@ get_name(Req) ->
   Username = element(1, cowboy_req:binding(username, Req)),
   Name = list_to_binary(string:join(["[", binary_to_list(Username), "]"], "")),
   Name.
-  %   {{Host, Port}, _} = cowboy_req:peer(Req),
-  % Username = element(1, cowboy_req:binding(username, Req)),
-  % Name = list_to_binary(string:join(["[", inet_parse:ntoa(Host),
-  %   ":", io_lib:format("~p", [Port]), "]-[", binary_to_list(Username), "]"], "")),
-  % Name.
