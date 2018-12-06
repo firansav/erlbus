@@ -6,7 +6,6 @@
       <script type="text/javascript">
         var websocket;
         jQuery(document).ready(init);
-
         function init() {
           jQuery("#roomContainer").hide();  
           jQuery("#alertContainer").hide();
@@ -17,33 +16,33 @@
             jQuery("#connectButton").show();
           };
         };
-
         function connect() {
-        wsHost = "ws://" + window.location.host + "/websocket";
+          let username = jQuery("#username").val();
+          jQuery("#username").hide();
+          jQuery("#connectButton").hide();
+          jQuery("#greetings").append("<h3> Hello " + username + "! </h3>")
+        wsHost = "ws://" + window.location.host + "/websocket/" + username;
         websocket = new WebSocket(wsHost);
         websocket.onopen = function(evt) { onOpen(evt) }; 
         websocket.onclose = function(evt) { onClose(evt) }; 
         websocket.onmessage = function(evt) { onMessage(evt) }; 
         websocket.onerror = function(evt) { onError(evt) }; 
       }; 
-
       function onOpen(evt) { 
         jQuery('#roomContainer').fadeIn('slow');
       };  
-
       function onClose(evt) { 
         jQuery('#roomContainer').fadeOut('slow');
         showAlert('<span style="color: red;">Websocket connection has been closed!</span>');
+        jQuery("#username").fadeIn("slow");
+        jQuery("#connectButton").fadeIn("slow");
       };  
-
       function onMessage(evt) { 
         showMessage(jQuery.parseJSON(evt.data));
       };  
-
       function onError(evt) {
         showAlert('<span style="color: red;">ERROR: ' + evt.data+ '</span>');
       };
-
       function sendMessage() {
         if(websocket.readyState == websocket.OPEN){
           var txt = jQuery("#textToSend").val();
@@ -53,11 +52,9 @@
            showAlert('<span style="color: red;">ERROR: websocket is not ready</span>');
         };
       };
-
       function showMessage(data) {
         jQuery('#chatContainer').append('<div>' + data.sender + ' -> ' + data.msg + '</div>');
       };
-
       function showAlert(txt) {
         jQuery("#alertContainer").html(txt);
         jQuery("#alertContainer").show();
@@ -73,8 +70,9 @@
   </head>
   <body>
     <div id="alertContainer"></div>
+    <input id="username" placeholder="Username" type="text" />
     <input id="connectButton" type="button" value="Join the Chat Room!" onclick="connect();"/>
-
+    <div id="greetings"></div>
     <div id="roomContainer">
       <div id="chatContainer"></div>
       <form onsubmit="sendMessage(); return false;">
